@@ -76,9 +76,10 @@ class User extends Abstracts
      * @param  string      $password
      * @return bool|string
      */
-    private function passwordHash($password)
+    private function passwordHash($data)
     {
-        return password_hash($password, PASSWORD_DEFAULT);
+        // return md5(hash('sha256', $data['password'].'mpt'.$data['username']));
+        return password_hash($data['password'], PASSWORD_DEFAULT);
     }
 
     /**
@@ -112,7 +113,7 @@ class User extends Abstracts
             'disable_time' => 0,
         ])->all();
 
-        $data['password'] = $this->passwordHash($data['password']);
+        $data['password'] = $this->passwordHash($data);
 
         return $data;
     }
@@ -123,7 +124,7 @@ class User extends Abstracts
     protected function beforeUpdate(array $data): array
     {
         if (isset($data['password'])) {
-            $data['password'] = $this->passwordHash($data['password']);
+            $data['password'] = $this->passwordHash($data);
         }
 
         return $data;

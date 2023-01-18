@@ -36,7 +36,7 @@ class Token extends Abstracts
             App::$config['APP_DEBUG'] ? 30 : 3, // 调试模式放宽限制
             3600 * 24
         );
-
+        
         $data = $this->data($data)
             ->field('name')->exist()->string()->notEmpty()
             ->field('password')->exist()->string()->notEmpty()
@@ -45,7 +45,7 @@ class Token extends Abstracts
 
         $user = UserModel
             ::where($this->isEmail($data['name']) ? 'email' : 'username', $data['name'])
-            ->field(['user_id', 'password', 'disable_time'])
+            ->field(['user_id', 'password', 'disable_time', 'username'])
             ->get();
 
         $errors = [];
